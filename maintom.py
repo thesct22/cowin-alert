@@ -36,8 +36,9 @@ def crawl_cowin(pin_code_list,date):
                 for session in session_list:
                     available_capacity = session['available_capacity']
                     min_age_limit = session["min_age_limit"]
-                    if min_age_limit == 18:
-                        print(center)
+                    vaccine = session["vaccine"]
+                    if min_age_limit == 18 and vaccine == 'COVISHIELD':
+                        print(session)
                         file1 = open("output.txt","a")
                         file1.write(str(center))
                         file1.write("\n")
@@ -50,7 +51,7 @@ def crawl_cowin(pin_code_list,date):
                         sys.exit(0)
         except Exception as exp:
             print("Exception is "+str(exp),flush=True)
-            time.sleep(random.randint(1, 20))
+            time.sleep(random.randint(1, 5))
 
 
 i = 0

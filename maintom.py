@@ -7,6 +7,8 @@ import time
 import random
 import os
 import sys
+import traceback
+
 
 sys.stdout.flush()
 
@@ -15,9 +17,10 @@ file1 = open("output.txt","a")
 faker = Faker()
 
 headers = {
-            "user-agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) "
-                         "Chrome/90.0.4430.93 Safari/537.36"
-         }
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36 Edg/90.0.818.66',
+            'origin': 'https://selfregistration.cowin.gov.in',
+            'referer': 'https://selfregistration.cowin.gov.in/'
+        }
 def crawl_cowin(pin_code_list,date):
     ip_addr = faker.ipv4()
     headers["X-Forwarded-For"] = ip_addr
@@ -39,25 +42,27 @@ def crawl_cowin(pin_code_list,date):
                     vaccine = session["vaccine"]
                     if min_age_limit == 18 and vaccine == 'COVISHIELD':
                         print(session)
-                        file1 = open("output.txt","a")
-                        file1.write(str(center))
-                        file1.write("\n")
-                        file1.write(str(datetime.datetime.now()))
-                        file1.write("\n")
-                        file1.close()
+                        #file1 = open("outputtom.txt","a")
+                        #file1.write(str(session))
+                        #file1.write("\n")
+                        #file1.write(str(datetime.datetime.now()))
+                        #file1.write("\n")
+                        #file1.close()
                     if available_capacity > 0 and min_age_limit == 18:
                         print("Pincode:"+pin_code+" Available capacity :"+str(available_capacity),flush=True)
-                        os.system("play siren.wav")
+                        os.system("play song.wav")
                         sys.exit(0)
         except Exception as exp:
             print("Exception is "+str(exp),flush=True)
-            time.sleep(random.randint(1, 5))
-
+            print(exp.__class__)
+            os.system("play song.wav")
+            traceback.print_exc()
+            time.sleep(random.randint(5, 20))
 
 i = 0
 pin_codes = ["673004"]
 while True:
     print("Iteration count :"+str(i), flush=True)
-    crawl_cowin(pin_codes,date="26-05-2021")
-    time.sleep(5)
+    crawl_cowin(pin_codes,date="29-05-2021")
+    time.sleep(8)
     i+=1
